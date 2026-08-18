@@ -168,6 +168,7 @@ input[type="number"] { -moz-appearance: textfield; }
 .field.recipient { width: 100%; }
 .field.attn { flex: 1 1 auto; }
 .field.notano { flex: 1 1 auto; }
+.items-table input.field { width: 100%; }
 
 .print-only { display: none; }
 
