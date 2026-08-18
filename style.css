@@ -1,15 +1,21 @@
 /* ---------------------------------------------------------------------
-   Paper size for the dot-matrix continuous form.
-   Default below matches a common Indonesian "1/2 folio" continuous nota
-   form (9.5in x 5.5in) used with printers like the Epson LX-310/LX-800.
-   If your pre-printed stationery is a different size, change these two
-   variables and the @page rule near the bottom of this file to match.
+   Paper size for the dot-matrix continuous form: 24cm x 14cm.
+   If your stationery is a different size, change these two variables
+   and the @page rule near the bottom of this file to match, and set the
+   same custom paper size in your printer driver / OS print dialog.
+
+   Borders use a dotted rule rather than a solid line on purpose: a dot
+   matrix head draws a line by overlapping pin strikes, so a solid rule
+   means far more strikes per inch (slower, chews through the ribbon,
+   and still prints "toothy" at draft quality). A dotted rule is what
+   these forms use in practice - clearly a separator, cheap to print.
 --------------------------------------------------------------------- */
 :root {
-  --page-width: 9.5in;
-  --page-height: 5.5in;
+  --page-width: 24cm;
+  --page-height: 14cm;
   --ink: #000;
   --line: #000;
+  --line-style: dotted;
 }
 
 * { box-sizing: border-box; }
@@ -57,18 +63,18 @@ html, body {
   width: var(--page-width);
   min-height: var(--page-height);
   background: #fff;
-  border: 2px solid var(--line);
+  border: 2px var(--line-style) var(--line);
   box-shadow: 0 2px 10px rgba(0,0,0,0.25);
   font-size: 11px;
   line-height: 1.3;
 }
 
 table { border-collapse: collapse; width: 100%; table-layout: fixed; }
-td, th { border: 1px solid var(--line); padding: 3px 6px; vertical-align: top; }
+td, th { border: 1px var(--line-style) var(--line); padding: 3px 6px; vertical-align: top; }
 
 /* ---- header block ---- */
 .header-table { border-bottom: none; }
-.letterhead { width: 45%; border-right: 1px solid var(--line); }
+.letterhead { width: 45%; border-right: 1px var(--line-style) var(--line); }
 .letterhead-input {
   width: 100%;
   height: 100%;
@@ -136,7 +142,7 @@ td, th { border: 1px solid var(--line); padding: 3px 6px; vertical-align: top; }
 
 /* ---- footer note ---- */
 .footer-note {
-  border-top: 1px solid var(--line);
+  border-top: 1px var(--line-style) var(--line);
   text-align: center;
   font-weight: bold;
   font-size: 10px;
@@ -195,7 +201,7 @@ input[type="number"] { -moz-appearance: textfield; }
   .invoice {
     width: 100%;
     min-height: 0;
-    border: 2px solid #000;
+    border: 2px var(--line-style) #000;
     box-shadow: none;
     margin: 0;
   }
