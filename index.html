@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nota / Invoice</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="toolbar no-print">
+    <button id="addRowBtn" type="button">+ Tambah Baris</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <button id="printBtn" type="button" class="primary">Print</button>
+  </div>
+
+  <main class="page">
+    <div class="invoice" id="invoice">
+
+      <!-- Header block: letterhead box + date/recipient/nota info -->
+      <table class="header-table">
+        <tbody>
+          <tr>
+            <td class="letterhead" rowspan="6">
+              <textarea class="letterhead-input" placeholder="(Nama &amp; Alamat Perusahaan - opsional)"></textarea>
+            </td>
+            <td class="info-cell">
+              <div class="info-row">
+                <input type="text" class="field city" value="Jakarta" size="10">,
+                <input type="date" class="field idate no-print">
+                <span class="date-display print-only"></span>
+                <span class="weekday"></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="info-cell">Kepada Yth,</td>
+          </tr>
+          <tr>
+            <td class="info-cell">
+              <input type="text" class="field recipient" placeholder="Nama Perusahaan / Penerima">
+            </td>
+          </tr>
+          <tr>
+            <td class="info-cell">
+              <div class="info-row">
+                <span class="label">up</span>
+                <input type="text" class="field attn" placeholder="Nama Penerima 1">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="info-cell">
+              <div class="info-row">
+                <span class="label"></span>
+                <input type="text" class="field attn" placeholder="Nama Penerima 2 (opsional)">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="info-cell">
+              <div class="info-row">
+                <span class="label nota-label">NOTA NO:</span>
+                <input type="text" class="field notano" placeholder="">
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Items table -->
+      <table class="items-table">
+        <colgroup>
+          <col class="col-no">
+          <col class="col-nama">
+          <col class="col-qty">
+          <col class="col-unit">
+          <col class="col-harga">
+          <col class="col-jumlah">
+          <col class="col-action no-print">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>NO</th>
+            <th>NAMA BARANG</th>
+            <th>QTY</th>
+            <th>UNIT</th>
+            <th>HARGA (Rp)</th>
+            <th>JUMLAH</th>
+            <th class="no-print"></th>
+          </tr>
+        </thead>
+        <tbody id="itemsBody">
+          <!-- rows injected by script.js -->
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5" class="total-label">JUMLAH</td>
+            <td class="total-value" id="grandTotal">0</td>
+            <td class="no-print"></td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <!-- Signatures -->
+      <table class="signature-table">
+        <tbody>
+          <tr>
+            <td class="sig-cell">
+              <div class="sig-title">Tanda Terima,</div>
+              <div class="sig-space"></div>
+              <div class="sig-name">
+                (&nbsp;<input type="text" class="field sig-input" placeholder="">&nbsp;)
+              </div>
+              <div class="sig-caption">Stempel &amp; Nama Jelas</div>
+            </td>
+            <td class="sig-cell">
+              <div class="sig-title">Hormat Kami,</div>
+              <div class="sig-space"></div>
+              <div class="sig-name">
+                (&nbsp;<input type="text" class="field sig-input" placeholder="">&nbsp;)
+              </div>
+              <div class="sig-caption">Nama Jelas</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Footer note -->
+      <div class="footer-note">
+        MOHON DIPERIKSA&nbsp;: Barang yang sudah diterima tidak dapat ditukar/dikembalikan
+      </div>
+
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
