@@ -78,6 +78,62 @@
     weekdayEl.textContent = `(${weekday})`;
   }
 
+  function exportToExcel() {
+    const letterhead = document.querySelector('.letterhead-input').value;
+    const city = document.querySelector('.city').value;
+    const dateStr = dateDisplayEl.textContent + ' ' + weekdayEl.textContent;
+    const recipient = document.querySelector('.recipient').value;
+    const attnInputs = document.querySelectorAll('.attn');
+    const attn1 = attnInputs[0] ? attnInputs[0].value : '';
+    const attn2 = attnInputs[1] ? attnInputs[1].value : '';
+    const notano = document.querySelector('.notano').value;
+    const sigInputs = document.querySelectorAll('.sig-input');
+    const penerima = sigInputs[0] ? sigInputs[0].value : '';
+    const pengirim = sigInputs[1] ? sigInputs[1].value : '';
+
+    const rows = [];
+    if (letterhead) rows.push([letterhead]);
+    rows.push([`${city}, ${dateStr}`.trim()]);
+    rows.push(['Kepada Yth,']);
+    rows.push([recipient]);
+    if (attn1) rows.push(['up', attn1]);
+    if (attn2) rows.push(['', attn2]);
+    rows.push(['NOTA NO:', notano]);
+    rows.push([]);
+    rows.push(['NO', 'NAMA BARANG', 'QTY', 'UNIT', 'HARGA (Rp)', 'JUMLAH']);
+
+    const itemRows = itemsBody.querySelectorAll('tr');
+    itemRows.forEach((row, i) => {
+      const nama = row.querySelector('.item-nama').value;
+      const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+      const unit = row.querySelector('.item-unit').value;
+      const harga = parseFloat(row.querySelector('.item-harga').value) || 0;
+      const jumlah = parseFloat(row.dataset.jumlah) || 0;
+      rows.push([i + 1, nama, qty, unit, harga, jumlah]);
+    });
+
+    let total = 0;
+    itemRows.forEach(row => { total += parseFloat(row.dataset.jumlah) || 0; });
+    rows.push(['', '', '', '', 'JUMLAH', total]);
+
+    rows.push([]);
+    rows.push(['Tanda Terima,', '', '', 'Hormat Kami,']);
+    rows.push([]);
+    rows.push([]);
+    rows.push([`( ${penerima} )`, '', '', `( ${pengirim} )`]);
+
+    const sheet = XLSX.utils.aoa_to_sheet(rows);
+    sheet['!cols'] = [
+      { wch: 4 }, { wch: 28 }, { wch: 6 }, { wch: 8 }, { wch: 14 }, { wch: 14 }
+    ];
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, sheet, 'Nota');
+
+    const fileLabel = notano ? notano.replace(/[^a-z0-9-_]+/gi, '_') : (dateInput.value || 'nota');
+    XLSX.writeFile(workbook, `Nota-${fileLabel}.xlsx`);
+  }
+
   function init() {
     // default date = today
     const today = new Date();
@@ -91,6 +147,8 @@
     document.getElementById('addRowBtn').addEventListener('click', addRow);
 
     document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+    document.getElementById('excelBtn').addEventListener('click', exportToExcel);
 
     document.getElementById('resetBtn').addEventListener('click', () => {
       if (!confirm('Kosongkan semua isian nota ini?')) return;

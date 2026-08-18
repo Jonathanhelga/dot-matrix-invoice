@@ -15,7 +15,13 @@ screen is what gets printed, so there's no separate "preview" step.
 - The total `JUMLAH` row at the bottom sums all rows automatically.
 - `Reset` clears every field back to a blank form (asks for confirmation
   first, since it can't be undone).
+- `Simpan Excel` downloads the current nota as an `.xlsx` file (header info,
+  item rows, total, and signature names), named after the NOTA NO if one is
+  filled in.
 - `Print` opens the browser's print dialog.
+
+Excel export uses [SheetJS](https://sheetjs.com), vendored locally in
+`vendor/xlsx.full.min.js` so the app keeps working offline.
 
 ## Printing on a dot-matrix printer
 
