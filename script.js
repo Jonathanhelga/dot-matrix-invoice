@@ -1,5 +1,8 @@
 (() => {
   const DEFAULT_ROW_COUNT = 8;
+  // Bump this on every change so it's visible which version a browser has
+  // loaded (helps catch stale cached copies after a deploy).
+  const APP_VERSION = '2026-08-19.1';
 
   const itemsBody = document.getElementById('itemsBody');
   const grandTotalEl = document.getElementById('grandTotal');
@@ -135,6 +138,8 @@
   }
 
   function init() {
+    document.getElementById('versionLabel').textContent = `v${APP_VERSION}`;
+
     // default date = today
     const today = new Date();
     const iso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
