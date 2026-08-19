@@ -30,15 +30,22 @@ borders, no shading, gradients, or background fills, so it survives draft
 mode on a dot-matrix printer without wasting ink/ribbon on things that won't
 render well as a bitmap.
 
-The page size is set in `style.css` to `9.5in x 5.5in`, matching a common
+The page size is set in `style.css` to `280mm x 140mm`, matching a common
 Indonesian continuous "1/2 folio" nota form (works with printers like the
-Epson LX-310/LX-800). If your pre-printed stationery is a different size:
+Epson LQ-310/LX-800). If your pre-printed stationery is a different size:
 
 1. Open `style.css`.
 2. Change the `--page-width` and `--page-height` variables near the top of
-   the file to match your paper.
+   the file to match your paper, and also update the literal `size` value
+   in the `@page` rule further down (it's written as a literal instead of
+   `var(--page-width) var(--page-height)` because some browsers, notably
+   Firefox, don't resolve CSS custom properties inside `@page` and silently
+   fall back to a default portrait page instead).
 3. Also set the matching paper size in your printer driver / OS print
    dialog (custom paper size), so the browser and the printer agree.
+4. In the print dialog, make sure **Landscape** is selected. Some print
+   dialogs default to Portrait and will rotate the page even when the
+   page's own size is wider than it is tall.
 
 ## Running it locally
 

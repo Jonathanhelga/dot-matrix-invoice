@@ -1,8 +1,9 @@
 /* ---------------------------------------------------------------------
-   Paper size for the dot-matrix continuous form: 24cm x 14cm.
-   If your stationery is a different size, change these two variables
-   and the @page rule near the bottom of this file to match, and set the
-   same custom paper size in your printer driver / OS print dialog.
+   Paper size for the dot-matrix continuous form: 280mm x 140mm.
+   If your stationery is a different size, change these two variables,
+   AND the literal size value in the @page rule near the bottom of this
+   file (it can't use var() - see the note there), and set the same
+   custom paper size in your printer driver / OS print dialog.
 
    Borders use a dotted rule rather than a solid line on purpose: a dot
    matrix head draws a line by overlapping pin strikes, so a solid rule
@@ -11,8 +12,8 @@
    these forms use in practice - clearly a separator, cheap to print.
 --------------------------------------------------------------------- */
 :root {
-  --page-width: 24cm;
-  --page-height: 14cm;
+  --page-width: 280mm;
+  --page-height: 140mm;
   --ink: #000;
   --line: #000;
   --line-style: dotted;
@@ -189,7 +190,14 @@ input[type="number"] { -moz-appearance: textfield; }
 ======================================================================= */
 @media print {
   @page {
-    size: var(--page-width) var(--page-height);
+    /* Must be a literal value, not var(--page-width)/var(--page-height):
+       some browsers (Firefox in particular) don't resolve CSS custom
+       properties inside @page and silently drop the whole size
+       declaration, falling back to a default portrait page - which is
+       why this printed vertically instead of horizontally. Width first,
+       height second, width > height, so this is landscape. Keep this in
+       sync with --page-width/--page-height above if you change paper size. */
+    size: 280mm 140mm;
     margin: var(--print-margin);
   }
 
