@@ -15,6 +15,21 @@
     return n.toLocaleString('id-ID');
   }
 
+  function parseDigits(str) {
+    return parseInt(String(str).replace(/\D/g, ''), 10) || 0;
+  }
+
+  function formatHargaInput(input) {
+    const digitsBeforeCursor = input.value.slice(0, input.selectionStart).replace(/\D/g, '').length;
+    input.value = formatNumber(parseDigits(input.value));
+    let count = 0, pos = input.value.length;
+    for (let i = 0; i < input.value.length; i++) {
+      if (/\d/.test(input.value[i])) count++;
+      if (count === digitsBeforeCursor) { pos = i + 1; break; }
+    }
+    input.setSelectionRange(pos, pos);
+  }
+
   function buildRow() {
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -22,7 +37,7 @@
       <td><input type="text" class="field item-nama"></td>
       <td class="num"><input type="number" class="field item-qty" min="0" step="1"></td>
       <td><input type="text" class="field item-unit"></td>
-      <td class="money"><input type="number" class="field item-harga" min="0" step="1"></td>
+      <td class="money"><input type="text" inputmode="numeric" class="field item-harga"></td>
       <td class="money item-jumlah"></td>
       <td class="no-print"><button type="button" class="remove-row-btn" title="Hapus baris">&times;</button></td>
     `;
@@ -38,7 +53,7 @@
 
   function recalcRow(row) {
     const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
-    const harga = parseFloat(row.querySelector('.item-harga').value) || 0;
+    const harga = parseDigits(row.querySelector('.item-harga').value);
     const jumlah = qty * harga;
     row.querySelector('.item-jumlah').textContent = formatNumber(jumlah);
     row.dataset.jumlah = jumlah;
@@ -61,7 +76,11 @@
 
   function wireRow(tr) {
     tr.querySelector('.item-qty').addEventListener('input', () => recalcRow(tr));
-    tr.querySelector('.item-harga').addEventListener('input', () => recalcRow(tr));
+    const hargaInput = tr.querySelector('.item-harga');
+    hargaInput.addEventListener('input', () => {
+      formatHargaInput(hargaInput);
+      recalcRow(tr);
+    });
     tr.querySelector('.remove-row-btn').addEventListener('click', () => {
       tr.remove();
       renumberRows();
@@ -110,7 +129,7 @@
       const nama = row.querySelector('.item-nama').value;
       const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
       const unit = row.querySelector('.item-unit').value;
-      const harga = parseFloat(row.querySelector('.item-harga').value) || 0;
+      const harga = parseDigits(row.querySelector('.item-harga').value);
       const jumlah = parseFloat(row.dataset.jumlah) || 0;
       rows.push([i + 1, nama, qty, unit, harga, jumlah]);
     });
