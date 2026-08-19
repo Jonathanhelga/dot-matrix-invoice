@@ -16,6 +16,12 @@
   --ink: #000;
   --line: #000;
   --line-style: dotted;
+  /* Dot-matrix print heads can't strike all the way to the physical
+     paper edge - there's a small mechanical dead zone on every side.
+     This keeps the invoice content inset from that zone so nothing
+     gets clipped. Raise it if edges still get cut off, lower it if
+     you see too much blank border on the printout. */
+  --print-margin: 0.5cm;
 }
 
 * { box-sizing: border-box; }
@@ -184,7 +190,7 @@ input[type="number"] { -moz-appearance: textfield; }
 @media print {
   @page {
     size: var(--page-width) var(--page-height);
-    margin: 0;
+    margin: var(--print-margin);
   }
 
   html, body {
